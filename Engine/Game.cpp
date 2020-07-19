@@ -42,4 +42,10 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	if (wnd.mouse.LeftIsPressed())
+	{
+		gfx.DrawLineSegment({ gfx.ScreenWidth / 2, gfx.ScreenHeight / 2 }, 
+							(Vec2)wnd.mouse.GetPos(), 
+							Colors::Yellow);
+	}
 }

@@ -316,6 +316,47 @@ void Graphics::PutPixel( int x,int y,Color c )
 	pSysBuffer[Graphics::ScreenWidth * y + x] = c;
 }
 
+void Graphics::DrawLineSegment(Vec2 p1, Vec2 p2, Color c)
+{
+	float m = 0.0f;
+	if (p1.x != p2.x)
+	{
+		m = (p2.y - p1.y) / (p2.x - p1.x);
+	}
+
+	if (p1.x != p2.x && std::abs(m) <= 1)
+	{
+		if (p1.x > p2.x)
+		{
+			std::swap(p1, p2);
+		}
+		
+		float b = p1.y - m * p1.x;
+
+		for (int x = (int)p1.x; x < (int)p2.x; x++)
+		{
+			float y = m * (float)x + b;
+			PutPixel(x, (int)y, c);
+		}
+	}
+	else
+	{
+		if (p1.y > p2.y)
+		{
+			std::swap(p1, p2);
+		}
+		
+		m = (p2.x - p1.x) / (p2.y - p1.y);
+		float b = p1.x - m * p1.y;
+
+		for (int y = (int)p1.y; y < (int)p2.y; y++)
+		{
+			float x = m * (float) y + b;
+			PutPixel((int)x, y, c);
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception
