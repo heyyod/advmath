@@ -25,7 +25,8 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	ct( gfx )
 {
 	// Q2
 	// (-2,1)
@@ -72,5 +73,7 @@ void Game::ComposeFrame()
 	
 	
 	gfx.DrawClosedPolyline({ {10.0f, 10.0f}, {100.0f, 100.0f}, {200.0f, 25.0f}, {150.0f, 40.0f}, {50.0f, 5.0f} }, Colors::White);
-	gfx.DrawClosedPolyline(Star::Make(150.0f, 30.0f), Colors::Green);
+	
+	std::vector<Vec2> star = Star::Make(150.0f, 30.0f);
+	ct.DrawPolyline(star, Colors::Yellow);
 }
