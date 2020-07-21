@@ -357,6 +357,37 @@ void Graphics::DrawLineSegment(Vec2 p1, Vec2 p2, Color c)
 	}
 }
 
+void Graphics::DrawLine(float m, float b, Color c)
+{
+	if (std::abs(m) <= 1)
+	{
+		for (int x = 0; x < ScreenWidth; x++)
+		{
+			float y = m * (float)x + b;
+			PutPixel(x, (int)y, c);
+		}
+	}
+	else
+	{
+		for (int y = 0; y < ScreenHeight; y++)
+		{
+			m = 1 / m;
+			b = -b / m;
+			float x = m * (float)y + b;
+			PutPixel((int)x, y, c);
+		}
+	}
+}
+
+void Graphics::DrawClosedPolyline(const std::vector<Vec2>& vecs, Color c)
+{
+	for (auto v = vecs.begin(); v != std::prev(vecs.end()); v++)
+	{
+		DrawLineSegment(*v, *std::next(v), c);
+	}
+	DrawLineSegment(vecs.back(), vecs.front(), c);
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception

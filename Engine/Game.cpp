@@ -26,6 +26,26 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
+	// Q2
+	// (-2,1)
+	if ((float)1 == ((6 / 9)*(-1) + 3))
+	{
+		OutputDebugStringA("(-2,1) is on the line y=(6/9)x+3\n");
+	}
+	else
+	{
+		OutputDebugStringA("(-2,1) is not on the line y=(6/9)x+3\n");
+	}
+
+	// (3,5)
+	if ((float)5 == ((6 / 9)*(3) + 3))
+	{
+		OutputDebugStringA("(3,5) is on the line y=(6/9)x+3\n");
+	}
+	else
+	{
+		OutputDebugStringA("(3,5) is not on the line y=(6/9)x+3\n");
+	}
 }
 
 void Game::Go()
@@ -48,4 +68,7 @@ void Game::ComposeFrame()
 							(Vec2)wnd.mouse.GetPos(), 
 							Colors::Yellow);
 	}
+	
+	
+	gfx.DrawClosedPolyline({ {10.0f, 10.0f}, {100.0f, 100.0f}, {200.0f, 25.0f}, {150.0f, 40.0f}, {50.0f, 5.0f} }, Colors::White);
 }

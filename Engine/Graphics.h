@@ -25,6 +25,7 @@
 #include "ChiliException.h"
 #include "Colors.h"
 #include "Vec2.h"
+#include <vector>
 
 class Graphics
 {
@@ -59,6 +60,9 @@ public:
 	}
 	void PutPixel( int x,int y,Color c );
 	void DrawLineSegment(Vec2 p1, Vec2 p2, Color c);
+	void DrawLine(float m, float b, Color c);
+	void DrawClosedPolyline(const std::vector<Vec2>& vecs, Color c);
+
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
