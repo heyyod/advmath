@@ -336,7 +336,10 @@ void Graphics::DrawLineSegment(Vec2 p1, Vec2 p2, Color c)
 		for (int x = (int)p1.x; x < (int)p2.x; x++)
 		{
 			float y = m * (float)x + b;
-			PutPixel(x, (int)y, c);
+			if (x >= 0 && x < ScreenWidth && y >= 0 && y < ScreenHeight)
+			{
+				PutPixel(x, (int)y, c);
+			}
 		}
 	}
 	else
@@ -352,7 +355,10 @@ void Graphics::DrawLineSegment(Vec2 p1, Vec2 p2, Color c)
 		for (int y = (int)p1.y; y < (int)p2.y; y++)
 		{
 			float x = m * (float) y + b;
-			PutPixel((int)x, y, c);
+			if (x >= 0 && x < ScreenWidth && y >= 0 && y < ScreenHeight)
+			{
+				PutPixel((int)x, y, c);
+			}
 		}
 	}
 }
@@ -364,7 +370,10 @@ void Graphics::DrawLine(float m, float b, Color c)
 		for (int x = 0; x < ScreenWidth; x++)
 		{
 			float y = m * (float)x + b;
-			PutPixel(x, (int)y, c);
+			if (x >= 0 && x < ScreenWidth && y >= 0 && y < ScreenHeight)
+			{
+				PutPixel(x, (int)y, c);
+			}
 		}
 	}
 	else
@@ -374,7 +383,10 @@ void Graphics::DrawLine(float m, float b, Color c)
 			m = 1 / m;
 			b = -b / m;
 			float x = m * (float)y + b;
-			PutPixel((int)x, y, c);
+			if (x >= 0 && x < ScreenWidth && y >= 0 && y < ScreenHeight)
+			{
+				PutPixel((int)x, y, c);
+			}
 		}
 	}
 }
