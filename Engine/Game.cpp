@@ -20,34 +20,45 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "Star.h"
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	ct( gfx )
+	ct( gfx ),
+	cam(ct)
 {
-	// Q2
-	// (-2,1)
-	if ((float)1 == ((6 / 9)*(-1) + 3))
-	{
-		OutputDebugStringA("(-2,1) is on the line y=(6/9)x+3\n");
-	}
-	else
-	{
-		OutputDebugStringA("(-2,1) is not on the line y=(6/9)x+3\n");
-	}
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2(10.0f, 10.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(200.0f, 150.0f));
+	entities.emplace_back(Star::Make(200.0f, 90.0f), Vec2(-270.0f, -150.0f));
+	entities.emplace_back(Star::Make(50.0f, 25.0f), Vec2(-100.0f, 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(-320.0f, 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 50.0f), Vec2(400.0f, -150.0f));
+	entities.emplace_back(Star::Make(200.0f , 120.0f), Vec2(100.0f, -270.0f));
 
-	// (3,5)
-	if ((float)5 == ((6 / 9)*(3) + 3))
-	{
-		OutputDebugStringA("(3,5) is on the line y=(6/9)x+3\n");
-	}
-	else
-	{
-		OutputDebugStringA("(3,5) is not on the line y=(6/9)x+3\n");
-	}
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2(10.0f, 700.0f + 10.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(200.0f, 700.0f + 150.0f));
+	entities.emplace_back(Star::Make(200.0f, 90.0f), Vec2(-270.0f, 700.0f - 150.0f));
+	entities.emplace_back(Star::Make(50.0f, 25.0f), Vec2(-100.0f, 700.0f + 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(-320.0f, 700.0f + 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 50.0f), Vec2(400.0f, 700.0f - 150.0f));
+	entities.emplace_back(Star::Make(200.0f, 120.0f), Vec2(100.0f, 700.0f - 270.0f));
+
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2(1000.0f + 10.0f, 700.0f + 10.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(1000.0f + 200.0f, 700.0f + 150.0f));
+	entities.emplace_back(Star::Make(200.0f, 90.0f), Vec2(1000.0f - 270.0f, 700.0f - 150.0f));
+	entities.emplace_back(Star::Make(50.0f, 25.0f), Vec2(1000.0f - 100.0f, 700.0f + 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(1000.0f - 320.0f, 700.0f + 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 50.0f), Vec2(700.0f + 400.0f, 700.0f - 150.0f));
+	entities.emplace_back(Star::Make(200.0f, 120.0f), Vec2(1000.0f + 100.0f, 700.0f - 270.0f));
+
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2(1000.0f + 10.0f, 10.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(1000.0f + 200.0f, 150.0f));
+	entities.emplace_back(Star::Make(200.0f, 90.0f), Vec2(1000.0f - 270.0f, -150.0f));
+	entities.emplace_back(Star::Make(50.0f, 25.0f), Vec2(1000.0f - 100.0f, 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(1000.0f - 320.0f, 150.0f));
+	entities.emplace_back(Star::Make(150.0f, 50.0f), Vec2(1000.0f + 400.0f, -150.0f));
+	entities.emplace_back(Star::Make(200.0f, 120.0f), Vec2(1000.0f + 100.0f, -270.0f));
 }
 
 void Game::Go()
@@ -60,20 +71,42 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	float speed = 3.0f;
+	if (wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		cam.MoveBy({0.0f, speed });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		cam.MoveBy({ 0.0f, -speed });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		cam.MoveBy({ -speed, 0.0f });
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
+	{
+		cam.MoveBy({ speed,0.0f });
+	}
+	
+	while (!wnd.mouse.IsEmpty())
+	{
+		const auto e = wnd.mouse.Read();
+		if (e.GetType() == Mouse::Event::Type::WheelUp)
+		{
+			cam.SetScale(cam.GetScale() * 1.05f);
+		}
+		if (e.GetType() == Mouse::Event::Type::WheelDown)
+		{
+			cam.SetScale(cam.GetScale() * 0.95f);
+		}
+	}
 }
 
 void Game::ComposeFrame()
 {
-	if (wnd.mouse.LeftIsPressed())
+	for (auto e : entities)
 	{
-		gfx.DrawLineSegment({ gfx.ScreenWidth / 2, gfx.ScreenHeight / 2 }, 
-							(Vec2)wnd.mouse.GetPos(), 
-							Colors::Yellow);
+		cam.Draw(e.GetPolyline(), Colors::Blue);
 	}
-	
-	
-	gfx.DrawClosedPolyline({ {10.0f, 10.0f}, {100.0f, 100.0f}, {200.0f, 25.0f}, {150.0f, 40.0f}, {50.0f, 5.0f} }, Colors::White);
-	
-	std::vector<Vec2> star = Star::Make(150.0f, 30.0f);
-	ct.DrawPolyline(star, Colors::Yellow);
 }

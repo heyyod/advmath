@@ -24,6 +24,9 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "CoordinateTransformer.h"
+#include "Entity.h"
+#include "Star.h"
+#include "Camera.h"
 
 class Game
 {
@@ -44,5 +47,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	CoordinateTransformer ct;
+	Camera cam;
+	std::vector<Entity> entities;
 	/********************************/
 };
