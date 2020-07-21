@@ -2,6 +2,7 @@
 
 #include "CoordinateTransformer.h"
 #include "Vec2.h"
+#include "Drawable.h"
 
 class Camera
 {
@@ -29,14 +30,11 @@ public:
 	{
 		return scale;
 	}
-	void Draw(std::vector<Vec2> poly, Color c)
+	void Draw(Drawable& d)
 	{
-		for (auto& i : poly)
-		{
-			i -= pos;
-			i *= scale;
-		}
-		ct.DrawPolyline(std::move(poly), c);
+		d.Translate(-pos);
+		d.Scale(scale);
+		ct.Draw(std::move(d));
 	}
 
 private:

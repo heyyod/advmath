@@ -3,6 +3,7 @@
 #include "Vec2.h"
 #include "Graphics.h"
 #include "vector"
+#include "Drawable.h"
 
 class CoordinateTransformer
 {
@@ -12,15 +13,11 @@ public:
 		gfx(gfx)
 	{}
 	
-	void DrawPolyline(std::vector<Vec2> poly, Color c)
+	void Draw(Drawable& d)
 	{
-		for (auto& i : poly)
-		{
-			i.y *= -1.0f;
-			i.x += float( gfx.ScreenWidth / 2 );
-			i.y += float( gfx.ScreenHeight / 2 );
-		}
-		gfx.DrawClosedPolyline(poly, c);
+		d.Scale(1.0f, -1.0f); // flips the y axis
+		d.Translate({ gfx.ScreenWidth / 2, gfx.ScreenHeight / 2 }); // puts the object in the middle of the coordinate system.
+		d.Render(gfx);
 	}
 
 private:

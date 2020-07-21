@@ -49,7 +49,6 @@ Game::Game( MainWindow& wnd )
 	entities.emplace_back(Star::Make(200.0f, 90.0f), Vec2(1000.0f - 270.0f, 700.0f - 150.0f));
 	entities.emplace_back(Star::Make(50.0f, 25.0f), Vec2(1000.0f - 100.0f, 700.0f + 150.0f));
 	entities.emplace_back(Star::Make(150.0f, 90.0f), Vec2(1000.0f - 320.0f, 700.0f + 150.0f));
-	entities.emplace_back(Star::Make(150.0f, 50.0f), Vec2(700.0f + 400.0f, 700.0f - 150.0f));
 	entities.emplace_back(Star::Make(200.0f, 120.0f), Vec2(1000.0f + 100.0f, 700.0f - 270.0f));
 
 	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2(1000.0f + 10.0f, 10.0f));
@@ -107,6 +106,6 @@ void Game::ComposeFrame()
 {
 	for (auto e : entities)
 	{
-		cam.Draw(e.GetPolyline(), Colors::Blue);
+		cam.Draw(e.GetDrawable());
 	}
 }
