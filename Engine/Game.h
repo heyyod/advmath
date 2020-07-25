@@ -24,10 +24,9 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "CoordinateTransformer.h"
-#include "Entity.h"
-#include "Star.h"
 #include "Camera.h"
 #include "CameraControl.h"
+#include "Star.h"
 #include "FrameTimer.h"
 
 class Game
@@ -51,7 +50,24 @@ private:
 	CoordinateTransformer ct;
 	Camera cam;
 	CameraControl camControl;
-	std::vector<Entity> entities;
+	std::vector<Star> stars;
 	FrameTimer timer;
 	/********************************/
+
+	// world generation parameters
+	static constexpr float worldWidth = 10000.0f;
+	static constexpr float worldHeight = 6000.0f;
+	static constexpr int nStars = 500;
+	static constexpr float meanStarRadius = 160.0f;
+	static constexpr float devStarRadius = 90.0f;
+	static constexpr float minStarRadius = 40.0f;
+	static constexpr float maxStarRadius = 300.0f;
+	static constexpr float meanInnerRatio = 0.4f;
+	static constexpr float devInnerRatio = 0.25;
+	static constexpr float minInnerRatio = 0.15;
+	static constexpr float maxInnerRatio = 0.8;
+	static constexpr float meanFlares = 6.5f;
+	static constexpr float devFlares = 2.0f;
+	static constexpr int minFlares = 3;
+	static constexpr int maxFlares = 10;
 };

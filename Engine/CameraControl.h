@@ -65,7 +65,7 @@ void Update()
 		}
 	}
 private:
-	float zoomFactor = 1.05f;
+	float zoomFactor = 1.15f;
 	bool engaged = false;
 	Vec2 lastPos;
 	Mouse& mouse;

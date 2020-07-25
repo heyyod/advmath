@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Graphics.h"
 #include "CoordinateTransformer.h"
 #include "Vec2.h"
 #include "Drawable.h"
@@ -7,8 +8,9 @@
 class Camera
 {
 public:
-	Camera(CoordinateTransformer& ct)
+	Camera(Graphics& gfx, CoordinateTransformer& ct)
 		:
+		gfx(gfx),
 		ct(ct)
 	{
 	}
@@ -23,6 +25,15 @@ public:
 	}
 	void SetScale(float s)
 	{
+		scale = s;
+	}
+	void SetScale(float s, Vec2 mousePos)
+	{
+		// trying to zoom towards mouse pos
+		Vec2 center(gfx.ScreenWidth / 2.0f, gfx.ScreenHeight / 2.0f);
+		Vec2 camCenter = (mousePos - center) / 2;
+		camCenter.y = -camCenter.y;
+		MoveBy(camCenter);
 		scale = s;
 	}
 	float GetScale() const
@@ -40,5 +51,6 @@ private:
 	float scale = 1.0f;
 	Vec2 pos = { 0.0f, 0.0f };
 	CoordinateTransformer ct;
+	Graphics& gfx;
 	std::vector<Vec2> model;
 };

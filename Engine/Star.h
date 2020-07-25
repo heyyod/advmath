@@ -1,11 +1,24 @@
 #pragma once
 
+#include "Entity.h"
 #include "Vec2.h"
 #include <vector>
 
-class Star
+class Star : public Entity
 {
 public:
+	Star(Vec2 pos, float radius, float innerRatio, int nFlares, Color c)
+		:
+		Entity(Star::Make(radius, radius * innerRatio, nFlares), pos, c),
+		radius(radius)
+	{}
+
+	float GetRadius() const
+	{
+		return radius;
+	}
+
+private:
 	static std::vector<Vec2> Make(float outerRadius, float innerRadius, int nFlares = 5)
 	{
 		int totalVerteces = 2 * nFlares;
@@ -19,4 +32,7 @@ public:
 		}
 		return star;
 	}
+
+private:
+	float radius;
 };
