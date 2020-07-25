@@ -62,6 +62,7 @@ public:
 	void DrawLineSegment(Vec2 p1, Vec2 p2, Color c);
 	void DrawLine(float m, float b, Color c);
 	void DrawClosedPolyline(const std::vector<Vec2>& vecs, Color c);
+	void DrawClosedPolyline(const std::vector<Vec2>& vecs, const Vec2& translation, float scale_x, float scale_y, Color c);
 
 	~Graphics();
 private:

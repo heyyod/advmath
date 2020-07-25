@@ -400,6 +400,27 @@ void Graphics::DrawClosedPolyline(const std::vector<Vec2>& vecs, Color c)
 	DrawLineSegment(vecs.back(), vecs.front(), c);
 }
 
+void Graphics::DrawClosedPolyline(const std::vector<Vec2>& vecs, const Vec2 & translation, float scale_x, float scale_y, Color c)
+{
+	const auto xform = [&](Vec2 v)
+	{
+		v.x *= scale_x;
+		v.y *= scale_y;
+		v += translation;
+		return v;
+	};
+
+	const Vec2 front = xform(vecs.front());
+	Vec2 cur = front;
+	for (auto i = vecs.begin(); i != std::prev(vecs.end()); i++)
+	{
+		const Vec2 next = xform(*std::next(i));
+		DrawLineSegment(cur, next, c);
+		cur = next;
+	}
+	DrawLineSegment(cur, front, c);
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception
