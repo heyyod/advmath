@@ -9,7 +9,6 @@ class Camera
 public:
 	Camera(CoordinateTransformer& ct)
 		:
-		model(std::move(model)),
 		ct(ct)
 	{
 	}

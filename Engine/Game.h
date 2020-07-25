@@ -27,6 +27,8 @@
 #include "Entity.h"
 #include "Star.h"
 #include "Camera.h"
+#include "CameraControl.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -48,6 +50,8 @@ private:
 	/*  User Variables              */
 	CoordinateTransformer ct;
 	Camera cam;
+	CameraControl camControl;
 	std::vector<Entity> entities;
+	FrameTimer timer;
 	/********************************/
 };

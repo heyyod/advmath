@@ -333,7 +333,7 @@ void Graphics::DrawLineSegment(Vec2 p1, Vec2 p2, Color c)
 		
 		float b = p1.y - m * p1.x;
 
-		for (int x = (int)p1.x; x < (int)p2.x; x++)
+		for (int x = (int)p1.x; x <= (int)p2.x; x++)
 		{
 			float y = m * (float)x + b;
 			if (x >= 0 && x < ScreenWidth && y >= 0 && y < ScreenHeight)
@@ -352,7 +352,7 @@ void Graphics::DrawLineSegment(Vec2 p1, Vec2 p2, Color c)
 		m = (p2.x - p1.x) / (p2.y - p1.y);
 		float b = p1.x - m * p1.y;
 
-		for (int y = (int)p1.y; y < (int)p2.y; y++)
+		for (int y = (int)p1.y; y <= (int)p2.y; y++)
 		{
 			float x = m * (float) y + b;
 			if (x >= 0 && x < ScreenWidth && y >= 0 && y < ScreenHeight)

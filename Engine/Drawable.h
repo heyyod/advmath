@@ -11,7 +11,8 @@ public:
 		:
 		model(std::move(model)),
 		c(c)
-	{}
+	{
+	}
 
 	void Translate(const Vec2& translation_in)
 	{

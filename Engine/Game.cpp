@@ -22,52 +22,21 @@
 #include "Game.h"
 #include <random>
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd ),
-	ct( gfx ),
-	cam(ct)
+	wnd(wnd),
+	gfx(wnd),
+	ct(gfx),
+	cam(ct),
+	camControl(wnd.mouse, wnd.kbd, cam)
 {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> flaresDistr(3, 8);
-	std::uniform_real_distribution<> outterRadiusDistr(30.0f, 500.0f);
-	std::uniform_real_distribution<> innerRadiusDistr(20.0f, 400.0f);
-	std::uniform_real_distribution<> posXDistr(-10000.0f, 10000.0f);
-	std::uniform_real_distribution<> posYDistr(-5000.0f, 5000.0f);
-
-	//for(int i = 0; i < 2000; i++)
-	while(entities.size() <= 500)
-	{
-		int flares = flaresDistr(gen);
-		float outterRadius = (float) outterRadiusDistr(gen);
-		float innerRadius = (float) innerRadiusDistr(gen);
-		float posX = (float) posXDistr(gen);
-		float posY = (float) posYDistr(gen);
-
-		if (outterRadius < innerRadius)
-		{
-			std::swap(outterRadius, innerRadius);
-		}
-
-		Model m(Star::Make(outterRadius, innerRadius), outterRadius, outterRadius);
-		Entity newEntity(m, Vec2(posX, posY));
-
-		bool canPlace = true;
-		for (auto& e : entities)
-		{
-			if (newEntity.Intesect(e))
-			{
-				canPlace = false;
-				break;
-			}
-		}
-		if (canPlace)
-		{
-			entities.emplace_back(newEntity);
-		}
-	}
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2{ 460.0f,0.0f });
+	entities.emplace_back(Star::Make(150.0f, 50.0f), Vec2{ 150.0f,300.0f });
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2{ 250.0f,-200.0f });
+	entities.emplace_back(Star::Make(150.0f, 50.0f), Vec2{ -250.0f,200.0f });
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2{ 0.0f,0.0f });
+	entities.emplace_back(Star::Make(200.0f, 50.0f), Vec2{ -150.0f,-300.0f });
+	entities.emplace_back(Star::Make(100.0f, 50.0f), Vec2{ 400.0f,300.0f });
 }
 
 void Game::Go()
@@ -80,50 +49,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	float speed = 50.0f;
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		cam.MoveBy({0.0f, speed });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		cam.MoveBy({ 0.0f, -speed });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	{
-		cam.MoveBy({ -speed, 0.0f });
-	}
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	{
-		cam.MoveBy({ speed,0.0f });
-	}
-	
-	while (!wnd.mouse.IsEmpty())
-	{
-		const auto e = wnd.mouse.Read();
-		if (e.GetType() == Mouse::Event::Type::WheelUp)
-		{
-			cam.SetScale(cam.GetScale() * 1.15f);
-		}
-		if (e.GetType() == Mouse::Event::Type::WheelDown)
-		{
-			cam.SetScale(cam.GetScale() * 0.85f);
-		}
-	}
+	camControl.Update();
 }
 
 void Game::ComposeFrame()
 {
-	for (auto e : entities)
+	for (const auto& entity : entities)
 	{
-		cam.Draw(e.GetDrawable());
-		cam.Draw(
-			Drawable({
-			{e.left(), e.top()},
-			{e.left(), e.bottom()},
-			{e.right(), e.bottom()},
-			{e.right(), e.top()} },
-			Colors::Green)
-			);
+		cam.Draw(entity.GetDrawable());
 	}
 }
